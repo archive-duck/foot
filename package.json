@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "homepage": "https://foot.duckarchive.com",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
