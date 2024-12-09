@@ -74,7 +74,7 @@ const Archium2WikiPage: React.FC = () => {
         w="50%"
         h="full"
         resize="none"
-        placeholder="Скопіюйте текс з сайту архіуму, та вставте сюди"
+        placeholder="Скопіюйте текст з сайту архіуму, та вставте сюди"
         onChange={handleArchiumTextChange}
         bg="white"
       />

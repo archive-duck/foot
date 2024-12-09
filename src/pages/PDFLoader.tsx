@@ -130,6 +130,11 @@ const PDFLoaderPage: React.FC = () => {
 
   return (
     <Container>
+      <HStack justifyContent="center" alignItems="center" w="full" gap={0}>
+        <Heading as="h2" fontSize="lg" color="gray.700" lineHeight={1}>
+          Завантажувач PDF
+        </Heading>
+      </HStack>
       <HStack pt={2}>
         <IoWarning color="orange" size={48} />
         <Text fontSize="sm" color="gray.500">

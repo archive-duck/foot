@@ -5,7 +5,7 @@ import Archium2WikiPage from "./pages/Archium2Wiki";
 
 const WebRouter: React.FC = () => (
   <div>
-    <Route path="/" component={PDFLoaderPage} />
+    <Route path="/pdf-loader" component={PDFLoaderPage} />
     <Route path="/wiki-upload" component={WikiUploadPage} />
     <Route path="/archium-2-wiki" component={Archium2WikiPage} />
   </div>
