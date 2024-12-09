@@ -2,13 +2,15 @@ import { Route } from "wouter";
 import PDFLoaderPage from "./pages/PDFLoader";
 import WikiUploadPage from "./pages/WikiUpload";
 import Archium2WikiPage from "./pages/Archium2Wiki";
+import HomePage from "./pages/Home";
 
 const WebRouter: React.FC = () => (
-  <div>
+  <main>
+    <Route path="/" component={HomePage} />
     <Route path="/pdf-loader" component={PDFLoaderPage} />
     <Route path="/wiki-upload" component={WikiUploadPage} />
     <Route path="/archium-2-wiki" component={Archium2WikiPage} />
-  </div>
+  </main>
 );
 
 export default WebRouter;

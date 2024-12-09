@@ -10,7 +10,7 @@ const Header: React.FC = () => {
           <Image src={LogoSrc} alt="logo" boxSize="36px" />
           <Heading size="sm">Лапка</Heading>
         </HStack>
-        <HStack gap={4}>
+        <HStack gap={4} fontSize="md">
           <Link to="/pdf-loader">Завантажувач PDF</Link>
           {/* <Link to="/wiki-upload">Контакты</Link> */}
           {/* <Link to="/archium-2-wiki">Форматування тексту</Link> */}
