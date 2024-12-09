@@ -1,0 +1,85 @@
+{
+  "manifest_version": 3,
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkIZvj/QvAZSDUmcva7q5XF+/WtLvVhtwEs67bqI3XbOVVj2pkyvEXmavHBR/wHRPLaNJxQuNKg87KNt4DwfQFqD49DSJfGd/+5tDNAI7POTwrZ6Eh+foz4QEp8SSk4JuXoVDeCC2MtcRITg+kP2tWXAoPqQd+OzbpwuBFeyllsKxINZMfw2lcknSBf1RuUDz5OAzY3tNa/rqYqJ4CUS0bGZH01TU9T01IRFWPjOMFFYiaN58wf4YfsPf96/VuLzONaBZdYB/vSFVUDlLLTZZy1J+iuHUF+Q9x2y88AdA2nL19Qa0grn/9xZNnGXUxpZYPJzgBd+lGKfkfjMincU4UwIDAQAB",
+  "name": "Справна Качка",
+  "description": "Універсальний завантажувач сканів архівних справ, з таких сайтів як Family Search, Archium та інших.",
+  "version": "1.9.0",
+  "icons": {
+    "16": "icons/logo-16x16.png",
+    "32": "icons/logo-32x32.png",
+    "48": "icons/logo-48x48.png",
+    "128": "icons/logo-128x128.png"
+  },
+  "action": {
+    "default_popup": "index.html"
+  },
+  "oauth2": {
+    "client_id": "228379752314-vpr45rhh7g0pjb2i162fnmdkqvas4en2.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+  },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "permissions": ["activeTab", "storage", "identity", "identity.email", "downloads"],
+  "content_scripts": [
+    {
+      "js": ["scripts/archium-duck-loader.js"],
+      "matches": [
+        "http://185.250.20.62/file-viewer/*",
+        "http://archium.krop.archives.gov.ua/file-viewer/*",
+        "https://archium.cdiak.archives.gov.ua/file-viewer/*",
+        "https://e-resource.tsdavo.gov.ua/file-viewer/*",
+        "https://e.tsdahou.archives.gov.ua/file-viewer/*",
+        "https://ksi-csamm.archives.gov.ua/file-viewer/*",
+        "https://e.archivelviv.gov.ua/file-viewer/*",
+        "https://zunr.arinsy.com/file-viewer/*",
+        "http://185.250.20.252/file-viewer/*",
+        "https://archium.tsdial.archives.gov.ua/file-viewer/*"
+      ]
+    },
+    {
+      "js": ["scripts/babynyar-duck-loader.js"],
+      "matches": [
+        "https://babynyar.org/ua/archive/*/*/*/*"
+      ]
+    },
+    {
+      "js": ["scripts/familysearch-duck-loader.js"],
+      "matches": [
+        "https://www.familysearch.org/search/film/*",
+        "https://www.familysearch.org/ark:/*",
+        "https://www.familysearch.org/records/images/image-details*"
+      ]
+    },
+    {
+      "js": ["scripts/familysearch-duck-search-improve.js"],
+      "matches": [
+        "https://www.familysearch.org/records/images/beta/search-results*"
+      ]
+    },
+    {
+      "js": ["scripts/reabit-duck-improve.js"],
+      "matches": [
+        "https://www.reabit.org.ua/nbr*"
+      ]
+    },
+    {
+      "js": ["scripts/cdiak-duck-loader.js"],
+      "matches": [
+        "https://cdiak.archives.gov.ua/spysok_fondiv/*/*/*"
+      ]
+    },
+    {
+      "js": ["scripts/dachho-duck-loader.js"],
+      "matches": [
+        "http://91.225.196.68/*"
+      ]
+    },
+    {
+      "js": ["scripts/nbuv-duck-loader.js"],
+      "matches": [
+        "https://irbis-nbuv.gov.ua/cgi-bin/irbis_ir/cgiirbis_64.exe*"
+      ]
+    }
+  ]
+}
