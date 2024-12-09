@@ -10,18 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Caching Gatsby ☘️
         id: vite-cache-build
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
-          path: |
-            public
-            .cache
+          path: dist
           key: ${{ runner.os }}-vite-build-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-vite-build-
+          restore-keys: ${{ runner.os }}-vite-build-
       
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -35,7 +32,7 @@ jobs:
           CI: true
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4.7.2
         with:
           branch: gh-pages
           folder: dist
