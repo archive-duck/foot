@@ -22,6 +22,9 @@ jobs:
           key: ${{ runner.os }}-vite-build-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-vite-build-
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install 🔧
         run: pnpm install
