@@ -30,7 +30,7 @@ import {
   getPdfDocumentFromFile,
   convertPdfDocumentToImages,
 } from "../services/pdf";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IoFolderOpen, IoReload, IoTrash, IoWarning } from "react-icons/io5";
 import { PDFDocumentProxy } from "pdfjs-dist";
 
@@ -56,6 +56,28 @@ const PDFLoaderPage: React.FC = () => {
   const [ms, setMs] = useState<Record<string, number>>({});
   const pdfDoc = useRef<PDFDocumentProxy | null>(null);
 
+  useEffect(() => {
+    // get url from query params
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlParam = urlParams.get("url");
+    if (urlParam) {
+      setUrl(urlParam);
+    }
+  }, []);
+
+  useEffect(() => {
+    const run = async () => {
+      const pdfResult = await getPdfDocumentFromUrl(url, setDownloadProgress);
+      pdfDoc.current = pdfResult.result;
+      setPagesRange([1, pdfResult.result.numPages]);
+      setFileName(pdfResult.name);
+      setMs(pdfResult.ms);
+    };
+    if (url) {
+      run();
+    }
+  }, [url]);
+
   const handleFileChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -75,14 +97,6 @@ const PDFLoaderPage: React.FC = () => {
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const parsedUrl = decodeURIComponent(e.target.value);
       setUrl(parsedUrl);
-      const pdfResult = await getPdfDocumentFromUrl(
-        parsedUrl,
-        setDownloadProgress
-      );
-      pdfDoc.current = pdfResult.result;
-      setPagesRange([1, pdfResult.result.numPages]);
-      setFileName(pdfResult.name);
-      setMs(pdfResult.ms);
       e.target.blur();
     },
     []
@@ -248,16 +262,16 @@ const PDFLoaderPage: React.FC = () => {
             <Text fontSize="lg" flexGrow={1}>
               {convertProgress === 100 ? "Завершено" : "Налаштування"}
             </Text>
-          {convertProgress === 100 && (
-            <IconButton
-              aria-label="Перезапустити"
-              size="sm"
-              icon={<IoReload />}
-              colorScheme="red"
-              variant="outline"
-              onClick={handleConvertReset}
-            />
-          )}
+            {convertProgress === 100 && (
+              <IconButton
+                aria-label="Перезапустити"
+                size="sm"
+                icon={<IoReload />}
+                colorScheme="red"
+                variant="outline"
+                onClick={handleConvertReset}
+              />
+            )}
           </CardHeader>
           <CardBody position="relative">
             <Text as="label">
