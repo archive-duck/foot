@@ -14,10 +14,16 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
 
     const result: string[] = [];
     rows.forEach((row) => {
-      const [dgs, f, d, c] = row.split("\t");
-      const parts = c.split(/--|;/);
-      parts.forEach((el) => {
-        result.push([dgs, f, d, el.trim()].join("\t"));
+      const [id, archRef, dgs, volumes] = row.split("\t");
+      if (!volumes) {
+        console.log("no volumes", row);
+      }
+      const parts = volumes.split(/--|;/);
+      parts.forEach((vol) => {
+        if (!vol) {
+          console.log("no parts", parts);
+        }
+        result.push([id, archRef, dgs, vol.trim()].join("\t"));
       });
     });
 
@@ -34,21 +40,22 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
     const del = "[., ]+";
     const result: string[] = rows.map((row) => {
       const clear = row.replace(
-        /\s(рожд|бра|смер|исп|ведо|фина|церк|рапор|реес|\(прод|\(cont|\(будет|метр|развод|birth|marr|religio|death|list|cens|alpha).{0,}$/gi,
+        /\s(рожд|бра|смер|исп|ведо|фина|церк|рапор|реес|\(прод|\(cont|\(будет|метр|развод|birth|marr|religio|death|list|cens|alpha|revision).{0,}$/gi,
         ""
       );
       if (/^vol.+/i.test(clear)) {
         const regex = new RegExp(
           `^Volume${del}(\\d+)-(\\d+)/([\\d\\wа-я-]+)`,
-          "g"
+          "gi"
         );
-        console.log("vol", regex);
+        // console.log("vol", regex);
         return clear.replace(regex, "$1\t$2\t$3");
-      } else if (/^ф/.test(clear)) {
+      } else if (/^ф/i.test(clear)) {
         const regex = new RegExp(
-          `^ф${del}(.+)${del}о${del}(.+)${del}д${del}([\\d\\wа-я-]+)`,
-          "g"
+          `^ф${del}([\\dа-я\\w]+)${del}о${del}([\\dа-я]+)${del}д${del}([\\d\\wа-я-]+)`,
+          "gi"
         );
+        console.log("фонд", regex);
         return clear.replace(regex, "$1\t$2\t$3");
       } else {
         return clear;
@@ -90,7 +97,7 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
           w="50%"
           h="full"
           resize="none"
-          placeholder={`id	archivalReferenceNumbers	dgs	raw`}
+          placeholder={`id\tarchRef\tdgs\tvolumes`}
           onChange={handleSplitMultipleCasesChange}
           bg="white"
         />
@@ -98,7 +105,7 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
           w="50%"
           h="full"
           resize="none"
-          placeholder={`id	archivalReferenceNumbers	dgs	raw\nid	archivalReferenceNumbers	dgs	raw\nid	archivalReferenceNumbers	dgs	raw`}
+          placeholder={`id\tarchRef\tdgs\tvolume\nid\tarchRef\tdgs\tvolume\nid\tarchRef\tdgs\tvolume`}
           bg="white"
           value={multipleCasesText}
           readOnly
