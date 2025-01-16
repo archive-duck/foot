@@ -55,7 +55,7 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
           `^ф${del}([\\dа-я\\w]+)${del}о${del}([\\dа-я]+)${del}д${del}([\\d\\wа-я-]+)`,
           "gi"
         );
-        console.log("фонд", regex);
+        // console.log("фонд", regex);
         return clear.replace(regex, "$1\t$2\t$3");
       } else {
         return clear;
