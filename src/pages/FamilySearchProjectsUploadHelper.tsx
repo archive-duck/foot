@@ -40,7 +40,7 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
     const del = "[., ]+";
     const result: string[] = rows.map((row) => {
       const clear = row.replace(
-        /\s(рожд|бра|смер|исп|ведо|фина|церк|рапор|реес|\(прод|\(cont|\(будет|метр|развод|birth|marr|religio|death|list|cens|alpha|revision).{0,}$/gi,
+        /\s(рожд|бра|смер|исп|ведо|фина|церк|рапор|рекрут|реес|\(прод|\(cont|\(будет|\(ошибк|\(стр|метр|перепис|спис|алфав|книга|сборн|крещен|указ|статист|ревизск|посеме|divorc|развод|birth|marr|religio|death|list|cens|alpha|revision).{0,}$/gi,
         ""
       );
       if (/^vol.+/i.test(clear)) {
@@ -49,6 +49,13 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
           "gi"
         );
         // console.log("vol", regex);
+        return clear.replace(regex, "$1\t$2\t$3");
+      } else if (/^фонд/i.test(clear)) {
+        const regex = new RegExp(
+          `^фонд${del}([\\dа-я\\w]+)${del}опись${del}([\\dа-я]+)${del}дело${del}([\\d\\wа-я-]+)`,
+          "gi"
+        );
+        // console.log("фонд", regex);
         return clear.replace(regex, "$1\t$2\t$3");
       } else if (/^ф/i.test(clear)) {
         const regex = new RegExp(
@@ -74,12 +81,17 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
     const result: string[] = [];
     rows.forEach((row) => {
       const [id, meta, dgs, f, d, c] = row.split("\t");
-      const [c1, c2] = c.split("-").sort((a, b) => parseInt(a) - parseInt(b));
-      result.push(`${id}\t${meta}\t${dgs}\t${f}\t${d}\t${c1}`);
-      for (let i = parseInt(c1) + 1; i < parseInt(c2); i++) {
-        result.push(`${id}\t${meta}\t${dgs}\t${f}\t${d}\t${i}`);
+      const parts = c.split(/,|;/).map((part) => part.trim());
+      for (const part of parts) {
+        const [c1, c2] = part.split("-").sort((a, b) => parseInt(a) - parseInt(b));
+        result.push(`${id}\t${meta}\t${dgs}\t${f}\t${d}\t${c1}`);
+        for (let i = parseInt(c1) + 1; i < parseInt(c2); i++) {
+          result.push(`${id}\t${meta}\t${dgs}\t${f}\t${d}\t${i}`);
+        }
+        if (c2) {
+          result.push(`${id}\t${meta}\t${dgs}\t${f}\t${d}\t${c2}`);
+        }
       }
-      result.push(`${id}\t${meta}\t${dgs}\t${f}\t${d}\t${c2}`);
     });
 
     const formatted = result.join("\n");
@@ -141,7 +153,7 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
           w="50%"
           h="full"
           resize="none"
-          placeholder={`TH-909-55553-54980-83		7807280	9	1	136-137`}
+          placeholder={`TH-909-55553-54980-83		7807280	9	1	136-137, 139-140`}
           onChange={handleRangesChange}
           bg="white"
         />
@@ -149,7 +161,7 @@ const FamilySearchProjectsUploadHelper: React.FC = () => {
           w="50%"
           h="full"
           resize="none"
-          placeholder={`TH-909-55553-54980-83		7807280	9	1	136\nTH-909-55553-54980-83		7807280	9	1	137`}
+          placeholder={`TH-909-55553-54980-83		7807280	9	1	136\nTH-909-55553-54980-83		7807280	9	1	137\nTH-909-55553-54980-83		7807280	9	1	139\nTH-909-55553-54980-83		7807280	9	1	140`}
           bg="white"
           value={rangesText}
           readOnly
